@@ -1,22 +1,26 @@
 import pygame
-from pygame.locals import *
 
-SCREEN_W = 640
-SCREEN_H = 480
+from game_object import GameObject
+
+# If we have more colors, consider a colors.py
+from objects.player import Player
+
 WHITE = (255, 255, 255)
 
 
-def main():
-    display = pygame.display.set_mode((SCREEN_W, SCREEN_H), 0, 32)
-    running = True
+class SpaceInvaders:
+    """Game implementation of Space Invaders"""
+    game_objects: list[GameObject] = []
 
-    while(running):
+    # TODO set up game player object, aliens etc
+    def __init__(self):
+        self.game_objects.append(Player())
+
+    def update(self, delta: int):
+        for obj in self.game_objects:
+            obj.update(delta)
+
+    def render(self, display: pygame.Surface):
         display.fill(WHITE)
-        for e in pygame.event.get():
-            if e.type == QUIT:
-                running = False
-
-        pygame.display.update()
-
-if __name__ == "__main__":
-    main()
+        for obj in self.game_objects:
+            obj.render(display)
