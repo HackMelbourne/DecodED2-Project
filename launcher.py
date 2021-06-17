@@ -1,8 +1,7 @@
-import time
-
 import pygame
 from pygame.locals import QUIT
-from constants import SCREEN_H,SCREEN_W,FPS
+
+from constants import SCREEN_H, SCREEN_W, FPS
 from game import SpaceInvaders
 
 
@@ -16,12 +15,13 @@ def main():
     while running:
         # Game Loop
         delta = game_clock.tick(FPS)
-        game.update(delta)
+        events = pygame.event.get()
+        game.update(delta, events)
         game.render(display)
         pygame.display.update()
 
         # Events not related to the game
-        for e in pygame.event.get():
+        for e in events:
             if e.type == QUIT:
                 running = False
 

@@ -17,7 +17,7 @@ class GameObject(metaclass=abc.ABCMeta):
         self.position = Vector2()
         self.velocity = Vector2()
 
-    def update(self, delta: int):
+    def update(self, delta: int, events: list[pygame.event.Event]):
         """
         Update this object
 
