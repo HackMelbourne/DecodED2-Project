@@ -7,17 +7,17 @@ from game_object import GameObject
 
 
 class Player(GameObject):
-    moving_left: bool = False
-    moving_right: bool = False
+    moving_left = False
+    moving_right = False
     # Player attributes
-    SPEED: float = 0.8
-    WIDTH = 40
 
     def __init__(self):
         super().__init__()
-        self.position = Vector2(SCREEN_W / 2, SCREEN_H / 2)
+        self.position = Vector2(370, 480) # Could put these in constants.py?
+        self.SPEED = 0.8
+        self.WIDTH = 40
 
-    def update(self, delta: int, events: list[pygame.event.Event]):
+    def update(self, delta, events):
         super().update(delta, events)
         for event in events:
             if event.type == KEYUP:
@@ -36,12 +36,8 @@ class Player(GameObject):
             self.velocity.x = self.SPEED
         else:
             self.velocity.x = 0
-
-        # teleport user back if they are walking off screen
-        if self.position.x < self.WIDTH / 2:
-            self.position.x = self.WIDTH / 2
-        elif self.position.x > SCREEN_W - self.WIDTH / 2:
-            self.position.x = SCREEN_W - self.WIDTH / 2
+        
+        self.boundary_check()
 
     def render(self, display):
         pygame.draw.circle(display, (255, 0, 0), self.position, self.WIDTH / 2)

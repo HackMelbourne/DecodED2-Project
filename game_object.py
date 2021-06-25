@@ -1,4 +1,5 @@
-import abc
+import abc # Stands for Abstract Base Classes
+from constants import SCREEN_W
 
 import pygame
 from pygame import Vector2
@@ -11,13 +12,26 @@ from pygame import Vector2
 class GameObject(metaclass=abc.ABCMeta):
     position: Vector2
     velocity: Vector2
+    SPEED: int
+    WIDTH: int
 
     # Could have acceleration but we won't have complex motion here.
     def __init__(self):
         self.position = Vector2()
         self.velocity = Vector2()
 
-    def update(self, delta: int, events: list[pygame.event.Event]):
+    def boundary_check(self):
+        if self.position.x < self.WIDTH / 2:
+            self.position.x = self.WIDTH / 2
+            return True
+            
+        elif self.position.x > SCREEN_W - self.WIDTH / 2:
+            self.position.x = SCREEN_W - self.WIDTH / 2
+            return True
+        
+        return False
+
+    def update(self, delta, events):
         """
         Update this object
 
