@@ -7,6 +7,9 @@ FPS = 144
 
 # Enemy Properties
 
-NUM_OF_ENEMIES = 20
-
-ROW_JUMP_SIZE = 10
+ENEMY_SPEED = 0.3
+TOTAL_GRID_SQUARES = 30
+MAX_PER_ROW = 10         # Thus there will be TOTAL_GRID_SQUARES/MAX_PER_ROW rows for enemies
+INITIAL_NUM_ENEMIES = 7
+ROW_JUMP_SIZE = 7
+ROW_GAP = 50
