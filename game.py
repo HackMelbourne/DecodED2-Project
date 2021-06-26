@@ -4,18 +4,19 @@ from pygame import Vector2
 
 from game_object import GameObject
 # If we have more colors, consider a colors.py
-from objects.Player import Player
+from objects.player import Player
 
-from objects.Enemy import Enemy
+from objects.enemy import Enemy
 from constants import MAX_PER_ROW, ROW_GAP, SCREEN_W, TOTAL_GRID_SQUARES, INITIAL_NUM_ENEMIES
 
 BLACK = (0, 0, 0)
+
 
 def generate_enemies():
     enemy_list = []
     coords_check = []
     OFFSET = 50
-    
+
     NUM_ROWS = TOTAL_GRID_SQUARES // MAX_PER_ROW
     COL_GAP = SCREEN_W // MAX_PER_ROW
 
@@ -39,9 +40,10 @@ def generate_enemies():
 
     return enemy_list
 
+
 class SpaceInvaders:
     """Game implementation of Space Invaders"""
-    game_objects = []
+    game_objects: list[GameObject] = []
 
     # TODO set up game player object, aliens etc
     def __init__(self):
@@ -50,8 +52,13 @@ class SpaceInvaders:
             self.game_objects.append(enemy)
 
     def update(self, delta, events):
-        for obj in self.game_objects:
-            obj.update(delta, events)
+        # Loop through game objects and remove ones which are expired.
+        # We are iterating backwards here
+        for i in range(len(self.game_objects) - 1, -1, -1):
+            obj = self.game_objects[i]
+            obj.update(delta, events, self.game_objects)
+            if obj.expired:
+                del self.game_objects[i]
 
     def render(self, display):
         display.fill(BLACK)

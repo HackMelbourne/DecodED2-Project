@@ -1,4 +1,4 @@
-import abc # Stands for Abstract Base Classes
+import abc  # Stands for Abstract Base Classes
 from constants import SCREEN_W
 
 import pygame
@@ -9,29 +9,44 @@ from pygame import Vector2
 # If not we can use pure python with no abc/other libs other than pygame
 
 
-class GameObject(metaclass=abc.ABCMeta):
+class GameObject:
     position: Vector2
     velocity: Vector2
-    SPEED: int
-    WIDTH: int
+    width: int
+    height: int
+    image: pygame.Surface
+    rect: pygame.Rect
+    # Whether this object should be removed next game loop
+    expired = False
 
     # Could have acceleration but we won't have complex motion here.
-    def __init__(self):
+    def __init__(self, width: int, height: int, sprite_img: str):
+        self.width = width
+        self.height = height
         self.position = Vector2()
         self.velocity = Vector2()
+        # Sprite and collision
+        self.image = pygame.transform.smoothscale(pygame.image.load(sprite_img), (width, height))
+        self.rect = pygame.rect.Rect(0, 0, width, height)
 
     def boundary_check(self):
-        if self.position.x < self.WIDTH / 2:
-            self.position.x = self.WIDTH / 2
+        """
+        Teleports the object back into the screen if they go outside.
+        :return true if the user was outside and teleported, false otherwise
+        """
+        if self.position.x < self.width / 2:
+            self.position.x = self.width / 2
             return True
-            
-        elif self.position.x > SCREEN_W - self.WIDTH / 2:
-            self.position.x = SCREEN_W - self.WIDTH / 2
+
+        elif self.position.x > SCREEN_W - self.width / 2:
+            self.position.x = SCREEN_W - self.width / 2
             return True
-        
+
         return False
 
-    def update(self, delta, events):
+    # objects is a list of all objects in the game (can't type since we have to refer to this class,
+    # and plan to remove types when development finishes
+    def update(self, delta: int, events: list[pygame.event.Event], objects):
         """
         Update this object
 
@@ -39,8 +54,10 @@ class GameObject(metaclass=abc.ABCMeta):
         regardless of FPS count. (aka runs the same on a potato, or a supercomputer. Only difference will be framerate)
 
         """
+        # Position
         self.position += delta * self.velocity
+        # Collision helper with rect
+        self.rect.update(self.position.x - self.width / 2, self.position.y - self.height / 2, self.width, self.height)
 
-    @abc.abstractmethod
     def render(self, display: pygame.Surface):
-        pass
+        display.blit(self.image, (self.position.x - self.width / 2, self.position.y - self.height / 2))

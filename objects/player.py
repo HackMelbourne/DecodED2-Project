@@ -4,21 +4,27 @@ from pygame.locals import K_LEFT, K_RIGHT, KEYDOWN, KEYUP
 
 from constants import SCREEN_H, SCREEN_W
 from game_object import GameObject
+from objects.enemy import Enemy
+
+PLAYER_START_VECTOR = Vector2(370, 480)
+PLAYER_START_SPEED = 0.8
 
 
 class Player(GameObject):
-    moving_left = False
-    moving_right = False
-    # Player attributes
+    speed: float
 
     def __init__(self):
-        super().__init__()
-        self.position = Vector2(370, 480) # Could put these in constants.py?
-        self.SPEED = 0.8
-        self.WIDTH = 40
+        super().__init__(40, 40, 'res/player.png')
+        # Movement tracking
+        self.moving_right = False
+        self.moving_left = False
 
-    def update(self, delta, events):
-        super().update(delta, events)
+        self.position.x = PLAYER_START_VECTOR.x  # Could put these in constants.py?
+        self.position.y = PLAYER_START_VECTOR.y
+        self.speed = PLAYER_START_SPEED
+
+    def update(self, delta, events, objects):
+        super().update(delta, events, objects)
         for event in events:
             if event.type == KEYUP:
                 if event.key == K_LEFT:
@@ -31,13 +37,14 @@ class Player(GameObject):
                 if event.key == K_RIGHT:
                     self.moving_right = True
         if self.moving_left:
-            self.velocity.x = -self.SPEED
+            self.velocity.x = -self.speed
         elif self.moving_right:
-            self.velocity.x = self.SPEED
+            self.velocity.x = self.speed
         else:
             self.velocity.x = 0
-        
+        # teleport player back to screen
         self.boundary_check()
-
-    def render(self, display):
-        pygame.draw.circle(display, (255, 0, 0), self.position, self.WIDTH / 2)
+        # check if player is dead
+        for obj in objects:
+            if isinstance(obj, Enemy) and self.rect.colliderect(obj.rect):
+                self.expired = True
