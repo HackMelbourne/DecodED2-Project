@@ -16,7 +16,8 @@ def main():
         # Game Loop
         delta = game_clock.tick(FPS)
         events = pygame.event.get()
-        game.update(delta, events)
+        game.handle_input(events)
+        game.update(delta)
         game.render(display)
         pygame.display.update()
 

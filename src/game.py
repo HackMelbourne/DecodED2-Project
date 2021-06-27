@@ -45,9 +45,8 @@ class Game:
 
             enemy_coords = Vector2(OFFSET + (rand_col * COL_GAP), OFFSET + (rand_row * ROW_GAP))
             self.entities.append(Enemy(enemy_coords))
-
-    def update(self, delta, events):
-        # Handle controls
+    
+    def handle_input(self, events):
         for event in events:
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
@@ -63,6 +62,7 @@ class Game:
                 if event.key == K_RIGHT and self.player.move_direction > 0:
                     self.player.stop_moving()
 
+    def update(self, delta):
         # Loop through game objects and remove ones which are expired.
         # We are iterating backwards here
         for i in range(len(self.entities) - 1, -1, -1):
