@@ -3,11 +3,6 @@ from src.constants import SCREEN_W
 import pygame
 from pygame import Vector2
 
-
-# TODO should we teach these concepts? Or stick to vanilla python?
-# If not we can use pure python with no abc/other libs other than pygame
-
-
 class Entity(pygame.Rect):
     position: Vector2
     velocity: Vector2
