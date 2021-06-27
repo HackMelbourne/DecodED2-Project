@@ -1,5 +1,5 @@
 import abc  # Stands for Abstract Base Classes
-from constants import SCREEN_W
+from src.constants import SCREEN_W
 
 import pygame
 from pygame import Vector2
@@ -9,7 +9,7 @@ from pygame import Vector2
 # If not we can use pure python with no abc/other libs other than pygame
 
 
-class GameObject:
+class Entity:
     position: Vector2
     velocity: Vector2
     width: int

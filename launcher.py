@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import QUIT
 
-from constants import SCREEN_H, SCREEN_W, FPS
-from game import SpaceInvaders
+from src.constants import SCREEN_H, SCREEN_W, FPS
+from src.game import SpaceInvaders
 
 
 def main():

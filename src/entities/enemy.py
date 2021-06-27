@@ -1,14 +1,14 @@
 import pygame
 from pygame import Vector2
 
-from constants import ROW_JUMP_SIZE, ENEMY_SPEED
-from game_object import GameObject
+from src.constants import ROW_JUMP_SIZE, ENEMY_SPEED
+from src.entity import Entity
 
 
 # Enemies will be positioned in a grid layout where the enemy will spawn at random in any one of these grid
 # squares
 
-class Enemy(GameObject):
+class Enemy(Entity):
     turn = False  # Tells whether enemy needs to turn or not
     jump = False
     direction = 1

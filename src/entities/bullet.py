@@ -2,11 +2,11 @@ import pygame
 from pygame import Vector2
 from pygame.locals import K_LEFT, K_RIGHT, KEYDOWN, KEYUP
 
-from constants import SCREEN_H, SCREEN_W, BULLET_SPEED
-from game_object import GameObject
-from objects.enemy import Enemy
+from src.constants import SCREEN_H, SCREEN_W, BULLET_SPEED
+from src.entity import Entity
+from src.entities.enemy import Enemy
 
-class Bullet(GameObject):
+class Bullet(Entity):
     def __init__(self, player_position):
         super().__init__(10, 10, 'res/bullet.png')
         self.position.x = player_position.x

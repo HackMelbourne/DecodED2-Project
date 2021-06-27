@@ -2,15 +2,15 @@ import pygame
 from pygame import Vector2
 from pygame.locals import K_LEFT, K_RIGHT, KEYDOWN, KEYUP
 
-from constants import SCREEN_H, SCREEN_W
-from game_object import GameObject
-from objects.enemy import Enemy
+from src.constants import SCREEN_H, SCREEN_W
+from src.entity import Entity
+from src.entities.enemy import Enemy
 
 PLAYER_START_VECTOR = Vector2(370, 480)
 PLAYER_START_SPEED = 0.8
 
 
-class Player(GameObject):
+class Player(Entity):
     speed: float
 
     def __init__(self):
