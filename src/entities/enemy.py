@@ -19,7 +19,7 @@ class Enemy(Entity):
         # Velocity of enemy remains constant? Or should we make it speed up and slow down at certain areas?
         self.velocity.x = ENEMY_SPEED
 
-    def update(self, delta, events, objects):
+    def update(self, delta, objects):
         if self.jump:
             self.velocity.x = 0
             self.velocity.y = ROW_JUMP_SIZE
@@ -29,7 +29,7 @@ class Enemy(Entity):
             self.velocity *= self.direction
             self.turn = False
 
-        super().update(delta, events, objects)
+        super().update(delta, objects)
         self.move_towards_player()
 
     def move_towards_player(self):

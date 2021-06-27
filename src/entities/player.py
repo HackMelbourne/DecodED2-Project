@@ -28,23 +28,11 @@ class Player(Entity):
     def stop_moving(self):
         self.move_direction = 0
 
-    def update(self, delta, events, objects):
-        super().update(delta, events, objects)
+    def update(self, delta, objects):
+        super().update(delta, objects)
 
         # Set the movement velocity of the player based on its current direction
         self.velocity.x = self.move_direction * self.speed
-
-        for event in events:
-            if event.type == KEYUP:
-                if event.key == K_LEFT and self.move_direction < 0:
-                    self.stop_moving()
-                if event.key == K_RIGHT and self.move_direction > 0:
-                    self.stop_moving()
-            elif event.type == KEYDOWN:
-                if event.key == K_LEFT:
-                    self.move_left()
-                if event.key == K_RIGHT:
-                    self.move_right()
 
         # teleport player back to screen
         self.boundary_check()

@@ -14,8 +14,8 @@ class Bullet(Entity):
         # Bullet speed needs to be negative since its travelling upwards
         self.velocity.y = -BULLET_SPEED
 
-    def update(self, delta, events, objects):
-        super().update(delta, events, objects)
+    def update(self, delta, objects):
+        super().update(delta, objects)
         # check if bullet hits enemy
         for obj in objects:
             if isinstance(obj, Enemy) and self.rect.colliderect(obj.rect):

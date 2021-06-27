@@ -46,7 +46,7 @@ class Entity:
 
     # objects is a list of all objects in the game (can't type since we have to refer to this class,
     # and plan to remove types when development finishes
-    def update(self, delta: int, events: list[pygame.event.Event], objects):
+    def update(self, delta: int, objects):
         """
         Update this object
 

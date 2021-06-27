@@ -1,7 +1,7 @@
 import random
 
 from pygame import Vector2
-from pygame.locals import K_SPACE, KEYDOWN
+from pygame.locals import K_SPACE, K_LEFT, K_RIGHT, KEYDOWN, KEYUP, QUIT
 
 from src.entity import Entity
 # If we have more colors, consider a colors.py
@@ -63,15 +63,26 @@ class SpaceInvaders:
         else:
             self.bullet_timer += delta
        
+        # Handle player controls
         for event in events:
-            if event.type == KEYDOWN and event.key == K_SPACE:
-                self.entitys.append(Bullet(self.player.position))
+            if event.type == KEYDOWN:
+                if event.key == K_LEFT:
+                    self.player.move_left()
+                if event.key == K_RIGHT:
+                    self.player.move_right()
+                if event.key == K_SPACE and not self.player.expired:
+                    self.entitys.append(Bullet(self.player.position))
+            if event.type == KEYUP:
+                if event.key == K_LEFT and self.player.move_direction < 0:
+                    self.player.stop_moving()
+                if event.key == K_RIGHT and self.player.move_direction > 0:
+                    self.player.stop_moving()
 
         # Loop through game objects and remove ones which are expired.      
         # We are iterating backwards here
         for i in range(len(self.entitys) - 1, -1, -1):
             obj = self.entitys[i]
-            obj.update(delta, events, self.entitys)
+            obj.update(delta, self.entitys)
             if obj.expired:
                 del self.entitys[i]
 
