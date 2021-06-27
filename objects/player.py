@@ -36,6 +36,7 @@ class Player(GameObject):
                     self.moving_left = True
                 if event.key == K_RIGHT:
                     self.moving_right = True
+
         if self.moving_left:
             self.velocity.x = -self.speed
         elif self.moving_right:

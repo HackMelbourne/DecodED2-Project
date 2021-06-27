@@ -1,13 +1,15 @@
 import random
 
 from pygame import Vector2
+from pygame.locals import K_SPACE, KEYDOWN
 
 from game_object import GameObject
 # If we have more colors, consider a colors.py
 from objects.player import Player
+from objects.bullet import Bullet
 
 from objects.enemy import Enemy
-from constants import MAX_PER_ROW, ROW_GAP, SCREEN_W, TOTAL_GRID_SQUARES, INITIAL_NUM_ENEMIES
+from constants import MAX_PER_ROW, ROW_GAP, SCREEN_W, TOTAL_GRID_SQUARES, INITIAL_NUM_ENEMIES, BULLET_COOLDOWN
 
 BLACK = (0, 0, 0)
 
@@ -47,12 +49,25 @@ class SpaceInvaders:
 
     # TODO set up game player object, aliens etc
     def __init__(self):
-        self.game_objects.append(Player())
+        self.player = Player()
+        self.game_objects.append(self.player)
         for enemy in generate_enemies():
             self.game_objects.append(enemy)
+        
+        self.bullet_timer = 0
 
     def update(self, delta, events):
-        # Loop through game objects and remove ones which are expired.
+        # Keep track of bullet cooldown
+        if (self.bullet_timer + delta >= BULLET_COOLDOWN):
+            self.bullet_timer = self.bullet_timer + delta - BULLET_COOLDOWN
+        else:
+            self.bullet_timer += delta
+       
+        for event in events:
+            if event.type == KEYDOWN and event.key == K_SPACE:
+                self.game_objects.append(Bullet(self.player.position))
+
+        # Loop through game objects and remove ones which are expired.      
         # We are iterating backwards here
         for i in range(len(self.game_objects) - 1, -1, -1):
             obj = self.game_objects[i]

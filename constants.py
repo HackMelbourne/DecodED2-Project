@@ -4,9 +4,11 @@ SCREEN_H = 600
 WHITE = (255, 255, 255)
 # The target framerate of our game. Set to 0 for no limit
 FPS = 144
+# Bullet properities
+BULLET_SPEED = 1
+BULLET_COOLDOWN = 0.3
 
 # Enemy Properties
-
 ENEMY_SPEED = 1.8
 TOTAL_GRID_SQUARES = 30
 MAX_PER_ROW = 10         # Thus there will be TOTAL_GRID_SQUARES/MAX_PER_ROW rows for enemies

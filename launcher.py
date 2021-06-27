@@ -22,7 +22,7 @@ def main():
 
         # Events not related to the game
         for e in events:
-            if e.type == QUIT:
+            if e.type == QUIT: 
                 running = False
 
 
