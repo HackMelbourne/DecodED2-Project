@@ -43,35 +43,27 @@ def generate_enemies():
     return enemy_list
 
 
-class SpaceInvaders:
-    """Game implementation of Space Invaders"""
-    entitys: list[Entity] = []
-
-    # TODO set up game player object, aliens etc
+class Game:
+    """Main game logic implementation"""
     def __init__(self):
+        self.entities = []
         self.player = Player()
-        self.entitys.append(self.player)
+        self.entities.append(self.player)
         for enemy in generate_enemies():
-            self.entitys.append(enemy)
-        
-        self.bullet_timer = 0
+            self.entities.append(enemy)
 
     def update(self, delta, events):
-        # Keep track of bullet cooldown
-        if (self.bullet_timer + delta >= BULLET_COOLDOWN):
-            self.bullet_timer = self.bullet_timer + delta - BULLET_COOLDOWN
-        else:
-            self.bullet_timer += delta
-       
-        # Handle player controls
+        # Handle controls
         for event in events:
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
                     self.player.move_left()
                 if event.key == K_RIGHT:
                     self.player.move_right()
-                if event.key == K_SPACE and not self.player.expired:
-                    self.entitys.append(Bullet(self.player.position))
+                if event.key == K_SPACE:
+                    if not self.player.expired and self.player.can_shoot():
+                        self.entities.append(Bullet(Vector2(self.player.x, self.player.y)))
+                        self.bullet_timer = 0
             if event.type == KEYUP:
                 if event.key == K_LEFT and self.player.move_direction < 0:
                     self.player.stop_moving()
@@ -80,13 +72,19 @@ class SpaceInvaders:
 
         # Loop through game objects and remove ones which are expired.      
         # We are iterating backwards here
-        for i in range(len(self.entitys) - 1, -1, -1):
-            obj = self.entitys[i]
-            obj.update(delta, self.entitys)
+        for i in range(len(self.entities) - 1, -1, -1):
+            # Kill expired entities
+            obj = self.entities[i]
             if obj.expired:
-                del self.entitys[i]
+                del self.entities[i]
+
+            # Execute entity specific logic
+            obj.tick(delta, self.entities)
+
+            # Move the entity
+            obj.move(delta)
 
     def render(self, display):
         display.fill(BLACK)
-        for obj in self.entitys:
+        for obj in self.entities:
             obj.render(display)

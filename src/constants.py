@@ -8,10 +8,10 @@ WHITE = (255, 255, 255)
 FPS = 144
 # Bullet properities
 BULLET_SPEED = 1
-BULLET_COOLDOWN = 0.3
+BULLET_COOLDOWN = 500 # In milliseconds
 
 # Enemy Properties
-ENEMY_SPEED = 1.8
+ENEMY_SPEED = 0.3
 TOTAL_GRID_SQUARES = 30
 MAX_PER_ROW = 10         # Thus there will be TOTAL_GRID_SQUARES/MAX_PER_ROW rows for enemies
 INITIAL_NUM_ENEMIES = 7

@@ -8,21 +8,18 @@ from src.entities.enemy import Enemy
 
 class Bullet(Entity):
     def __init__(self, player_position):
-        super().__init__(10, 10, 'res/bullet.png')
-        self.position.x = player_position.x
-        self.position.y = player_position.y
+        super().__init__(player_position.x, player_position.y, 10, 10, 'res/bullet.png')
         # Bullet speed needs to be negative since its travelling upwards
         self.velocity.y = -BULLET_SPEED
 
-    def update(self, delta, objects):
-        super().update(delta, objects)
+    def tick(self, delta, objects):
         # check if bullet hits enemy
         for obj in objects:
-            if isinstance(obj, Enemy) and self.rect.colliderect(obj.rect):
-                self.expired = True
-                obj.expired = True
+            if isinstance(obj, Enemy) and self.colliderect(obj):
+                self.kill()
+                obj.kill()
+                
         # Remove bullet once out of bounds
-        if self.position.y < 0:
-            self.expired = True
-
+        if self.y < 0:
+            self.kill()
 

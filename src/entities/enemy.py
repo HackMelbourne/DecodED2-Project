@@ -10,32 +10,22 @@ from src.entity import Entity
 
 class Enemy(Entity):
     turn = False  # Tells whether enemy needs to turn or not
-    jump = False
     direction = 1
 
     def __init__(self, coords):
-        super().__init__(20, 20, 'res/enemy.png')
-        self.position = coords  # The coords will be generated from an outer function
-        # Velocity of enemy remains constant? Or should we make it speed up and slow down at certain areas?
+        super().__init__(coords.x, coords.y, 20, 20, 'res/enemy.png')
         self.velocity.x = ENEMY_SPEED
 
-    def update(self, delta, objects):
-        if self.jump:
-            self.velocity.x = 0
-            self.velocity.y = ROW_JUMP_SIZE
-        elif self.turn:
-            self.velocity.x = ENEMY_SPEED
-            self.velocity.y = 0
-            self.velocity *= self.direction
-            self.turn = False
-
-        super().update(delta, objects)
-        self.move_towards_player()
-
-    def move_towards_player(self):
-        if self.jump:
-            self.jump = False
-            self.turn = True
-        elif self.boundary_check():
+    def tick(self, delta, objects):
+        if self.turn:
             self.direction *= -1
-            self.jump = True
+            self.velocity.y = ROW_JUMP_SIZE
+            self.turn = False
+        else:
+            self.velocity.y = 0
+
+            # Jump a row once the screen border is hit 
+            # Updates static variable for all enemy instances
+            if self.boundary_check():
+                self.turn = True
+        self.velocity.x = ENEMY_SPEED * self.direction

@@ -1,4 +1,3 @@
-import abc  # Stands for Abstract Base Classes
 from src.constants import SCREEN_W
 
 import pygame
@@ -9,55 +8,65 @@ from pygame import Vector2
 # If not we can use pure python with no abc/other libs other than pygame
 
 
-class Entity:
+class Entity(pygame.Rect):
     position: Vector2
     velocity: Vector2
     width: int
     height: int
     image: pygame.Surface
-    rect: pygame.Rect
-    # Whether this object should be removed next game loop
-    expired = False
-
+    
     # Could have acceleration but we won't have complex motion here.
-    def __init__(self, width: int, height: int, sprite_img: str):
-        self.width = width
-        self.height = height
-        self.position = Vector2()
+    def __init__(self, x: int, y: int, width: int, height: int, sprite_img: str):
+        super().__init__(x, y, width, height)
         self.velocity = Vector2()
-        # Sprite and collision
+
+        # Whether this object should be removed next game loop
+        self.expired = False
+
+        # Sprite
         self.image = pygame.transform.smoothscale(pygame.image.load(sprite_img), (width, height))
-        self.rect = pygame.rect.Rect(0, 0, width, height)
+
+    def kill(self):
+        """
+        Expire the entity so it is removed from the world at the next game tick
+        """
+        self.expired = True
 
     def boundary_check(self):
         """
         Teleports the object back into the screen if they go outside.
         :return true if the user was outside and teleported, false otherwise
         """
-        if self.position.x < self.width / 2:
-            self.position.x = self.width / 2
+        if self.x < self.width / 2:
+            self.x = self.width / 2
             return True
 
-        elif self.position.x > SCREEN_W - self.width / 2:
-            self.position.x = SCREEN_W - self.width / 2
+        elif self.x > SCREEN_W - self.width / 2:
+            self.x = SCREEN_W - self.width / 2
             return True
 
         return False
 
-    # objects is a list of all objects in the game (can't type since we have to refer to this class,
-    # and plan to remove types when development finishes
-    def update(self, delta: int, objects):
+    def tick(self, delta: int, objects):
         """
-        Update this object
+        Game logic specific to the entity
+        """
+        pass
+
+    def move(self, delta: int):
+        """
+        Move this entity according to the delta parameter
 
         delta=the time since the last frame draw, used to ensure objects animate at the correct speed,
         regardless of FPS count. (aka runs the same on a potato, or a supercomputer. Only difference will be framerate)
 
         """
-        # Position
-        self.position += delta * self.velocity
-        # Collision helper with rect
-        self.rect.update(self.position.x - self.width / 2, self.position.y - self.height / 2, self.width, self.height)
+        self.update(
+            self.x + self.velocity.x * delta, 
+            self.y + self.velocity.y * delta, 
+            self.width, 
+            self.height
+        )
 
     def render(self, display: pygame.Surface):
-        display.blit(self.image, (self.position.x - self.width / 2, self.position.y - self.height / 2))
+        display.blit(self.image, (self.x - self.width / 2, self.y - self.height / 2))
