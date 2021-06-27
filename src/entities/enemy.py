@@ -16,7 +16,7 @@ class Enemy(Entity):
 
     def tick(self, delta, objects):
         # Jump a row once the screen border is hit 
-        # Updates static variable for all enemy instances
+        # TODO: Updates static variable for all enemy instances
         if self.boundary_check():
             self.turn = True
             
