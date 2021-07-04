@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import QUIT
 
 from src.constants import SCREEN_H, SCREEN_W, FPS
-from src.game import Game
+# from src.game import Game
 
 
 def main():
@@ -10,15 +10,15 @@ def main():
     display = pygame.display.set_mode((SCREEN_W, SCREEN_H), 0, 32)
 
     running = True
-    game = Game()
+    # game = Game()
     game_clock = pygame.time.Clock()
     while running:
         # Game Loop
         delta = game_clock.tick(FPS)
         events = pygame.event.get()
-        game.handle_input(events)
-        game.update(delta)
-        game.render(display)
+        # game.handle_input(events)
+        # game.update(delta)
+        # game.render(display)
         pygame.display.update()
 
         # Events not related to the game
@@ -29,3 +29,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
