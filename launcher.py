@@ -1,20 +1,20 @@
 import pygame
 from pygame.locals import QUIT
 
-from src.constants import SCREEN_H, SCREEN_W, FPS
+# from src.constants import SCREEN_H, SCREEN_W, FPS
 # from src.game import Game
 
 
 def main():
     # Use this to render anything to the screen (of type pygame.Surface)
-    display = pygame.display.set_mode((SCREEN_W, SCREEN_H), 0, 32)
+    # display = pygame.display.set_mode((SCREEN_W, SCREEN_H), 0, 32)
 
     running = True
     # game = Game()
-    game_clock = pygame.time.Clock()
+    # game_clock = pygame.time.Clock()
     while running:
         # Game Loop
-        delta = game_clock.tick(FPS)
+        # delta = game_clock.tick(FPS)
         events = pygame.event.get()
         # game.handle_input(events)
         # game.update(delta)
