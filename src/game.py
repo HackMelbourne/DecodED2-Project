@@ -1,34 +1,50 @@
+from pygame import Vector2, Color
 from pygame.locals import K_SPACE, K_LEFT, K_RIGHT, KEYDOWN, KEYUP
 
-BLACK = (0, 0, 0)
+from src.constants import BLACK, WHITE
 
 class Game:
+
     """Implementation of overall game logic"""
+    entities: "list"
+
     def __init__(self):
         self.entities = []
-    
+
     def handle_input(self, events):
         for event in events:
+            
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
-                    print("player move left")
+                    print("Move left")
                 if event.key == K_RIGHT:
-                    print("player move right")
+                    print("Move right")
                 if event.key == K_SPACE:
-                    print("player shoot!")
+                    print("Shoot!")
             if event.type == KEYUP:
-                print("key up")
+                if event.key == K_LEFT:
+                    print("Stop moving left")
+                if event.key == K_RIGHT:
+                    print("Stop moving right")
 
     def update(self, delta):
-        # Loop through game objects and remove ones which are expired.
+        # Loop through game objects
         # We are iterating backwards here
         for i in range(len(self.entities) - 1, -1, -1):
-            
-            print("execute entity specific logic for " + i + " and move entity")
+            obj = self.entities[i]
 
+            # Execute entity specific logic
 
-    def render(self, display):
+            # Move the entity
+
+    def render_text(self, display, font, text: str, color: Color, position: Vector2):
+        surface = font.render(text, True, color)
+        display.blit(surface, position)
+
+    def render(self, display, font):
         display.fill(BLACK)
-        for obj in self.entities:
-            print("render object")
+        
+        # Loop through the entities and render each entity
+            
+        self.render_text(display, font, "Space Invaders", WHITE, (50, 50))
 
