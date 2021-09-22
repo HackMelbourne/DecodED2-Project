@@ -4,6 +4,7 @@ import random
 from src.constants import ENEMY_BULLET_COOLDOWN, ENEMY_BULLET_SPEED, ENEMY_OFFSET, ROW_JUMP_SIZE
 from src.entity import Entity
 from src.entities.bullet import Bullet
+from src.sound import enemy_death
 
 
 class Enemy(Entity):
@@ -38,6 +39,7 @@ class Enemy(Entity):
         # Check for collision with bullets
         for obj in objects:
             if isinstance(obj, Bullet) and obj.kill_player is False and self.colliderect(obj):
+                enemy_death.play()
                 self.kill()
                 obj.kill()
 

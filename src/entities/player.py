@@ -4,7 +4,7 @@ from src.entity import Entity
 from src.entities.bullet import Bullet
 from src.entities.enemy import Enemy
 from src.constants import PLAYER_BULLET_COOLDOWN, PLAYER_BULLET_SPEED, PLAYER_START_VECTOR, PLAYER_SPEED, PLAYER_HEALTH
-
+from src.sound import player_shoot, player_death, player_hit
 
 class Player(Entity):
     move_direction: int
@@ -46,13 +46,14 @@ class Player(Entity):
         if self.shooting:
             objects.append(Bullet(Vector2(self.x, self.y),
                            PLAYER_BULLET_SPEED, KILL_PLAYER=False))
-
+            player_shoot.play()
             self.shooting = False
             self.bullet_cooldown = 0
 
         # Check collision with bullets and enemies
         for obj in objects:
             if isinstance(obj, Bullet) and obj.kill_player == True and self.colliderect(obj):
+                player_hit.play()
                 self.health -= 1
                 print(f"OOF! Player health is now {self.health}.")
                 obj.kill()
@@ -62,4 +63,5 @@ class Player(Entity):
                 print(f"Yikes, you've died! :<")
 
         if self.health <= 0:
+            player_death.play()
             self.kill()
