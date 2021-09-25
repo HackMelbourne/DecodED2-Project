@@ -7,7 +7,7 @@ from src.entities.shield import Shield
 
 
 class Game:
-
+    score = 0
     entities: "list"
 
     def __init__(self):
@@ -79,6 +79,7 @@ class Game:
             if obj.expired:
                 if isinstance(obj, Enemy):
                     self.num_active_enemies -= 1
+                    self.score += 1
                 del self.entities[i]
 
             obj.tick(delta, self.entities)
