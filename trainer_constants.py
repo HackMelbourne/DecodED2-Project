@@ -2,7 +2,7 @@ import enum
 
 GENERATIONS = 50
 # Whether we are training. If false, we instead run the best bot
-TRAIN_MODE = True
+TRAIN_MODE = False
 TRAINING_THREADS = 12
 MIN_MAX_OUTPUT = [0, 1]
 DELTA = 2

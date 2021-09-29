@@ -3,6 +3,9 @@ from src.constants import SCREEN_W, SCREEN_H, FPS
 from pygame.locals import QUIT
 from src.game import Game
 
+from trainer_util import calculate_inputs
+from time import sleep
+
 def main():
     
     pygame.init()
@@ -17,9 +20,12 @@ def main():
         delta = game_clock.tick(FPS)
         events = pygame.event.get()
         game.handle_input(events)
-        game.update(delta)
         game.render(display, font)
         pygame.display.update()
+
+        game.update(20)
+        print(calculate_inputs(game))
+        sleep(.5)
 
         for e in events:
             if e.type == QUIT:
